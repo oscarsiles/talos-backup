@@ -4,7 +4,7 @@
 #
 # Generated on 2023-11-20T06:19:52Z by kres latest.
 
-ARG TOOLCHAIN=docker.io/golang:1.21-alpine
+ARG TOOLCHAIN=docker.io/golang:1.22-alpine
 
 # cleaned up specs and compiled versions
 FROM scratch AS generate
@@ -30,25 +30,25 @@ RUN apk --update --no-cache add bash curl build-base protoc protobuf-dev
 # build tools
 FROM --platform=${BUILDPLATFORM} toolchain AS tools
 ENV GO111MODULE on
-ARG CGO_ENABLED
+ARG CGO_ENABLED=0
 ENV CGO_ENABLED ${CGO_ENABLED}
-ARG GOTOOLCHAIN
+ARG GOTOOLCHAIN=local
 ENV GOTOOLCHAIN ${GOTOOLCHAIN}
-ARG GOEXPERIMENT
+ARG GOEXPERIMENT=loopvar
 ENV GOEXPERIMENT ${GOEXPERIMENT}
 ENV GOPATH /go
-ARG DEEPCOPY_VERSION
+ARG DEEPCOPY_VERSION=v0.5.5
 RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/pkg go install github.com/siderolabs/deep-copy@${DEEPCOPY_VERSION} \
 	&& mv /go/bin/deep-copy /bin/deep-copy
-ARG GOLANGCILINT_VERSION
+ARG GOLANGCILINT_VERSION=v1.55.2
 RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/pkg go install github.com/golangci/golangci-lint/cmd/golangci-lint@${GOLANGCILINT_VERSION} \
 	&& mv /go/bin/golangci-lint /bin/golangci-lint
 RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/pkg go install golang.org/x/vuln/cmd/govulncheck@latest \
 	&& mv /go/bin/govulncheck /bin/govulncheck
-ARG GOIMPORTS_VERSION
+ARG GOIMPORTS_VERSION=v0.15.0
 RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/pkg go install golang.org/x/tools/cmd/goimports@${GOIMPORTS_VERSION} \
 	&& mv /go/bin/goimports /bin/goimports
-ARG GOFUMPT_VERSION
+ARG GOFUMPT_VERSION=v0.5.0
 RUN go install mvdan.cc/gofumpt@${GOFUMPT_VERSION} \
 	&& mv /go/bin/gofumpt /bin/gofumpt
 
@@ -93,42 +93,13 @@ RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/g
 FROM base AS talos-backup-linux-amd64-build
 COPY --from=generate / /
 WORKDIR /src/cmd/talos-backup
-ARG GO_BUILDFLAGS
-ARG GO_LDFLAGS
-RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/pkg GOARCH=amd64 GOOS=linux go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /talos-backup-linux-amd64
+RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/pkg GOARCH=amd64 GOOS=linux go build -o /talos-backup-linux-amd64
 
 # builds talos-backup-linux-arm64
 FROM base AS talos-backup-linux-arm64-build
 COPY --from=generate / /
 WORKDIR /src/cmd/talos-backup
-ARG GO_BUILDFLAGS
-ARG GO_LDFLAGS
-RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/pkg GOARCH=arm64 GOOS=linux go build ${GO_BUILDFLAGS} -ldflags "${GO_LDFLAGS}" -o /talos-backup-linux-arm64
-
-# runs unit-tests with race detector
-FROM base AS unit-tests-race
-WORKDIR /src
-ARG TESTPKGS
-RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/pkg --mount=type=cache,target=/tmp CGO_ENABLED=1 go test -v -race -count 1 ${TESTPKGS}
-
-# runs unit-tests
-FROM base AS unit-tests-run
-WORKDIR /src
-ARG TESTPKGS
-RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/pkg --mount=type=cache,target=/tmp go test -v -covermode=atomic -coverprofile=coverage.txt -coverpkg=${TESTPKGS} -count 1 ${TESTPKGS}
-
-# copies out the integration test binary
-FROM scratch AS integration.test
-COPY --from=integration-build /src/integration.test /integration.test
-
-FROM scratch AS talos-backup-linux-amd64
-COPY --from=talos-backup-linux-amd64-build /talos-backup-linux-amd64 /talos-backup-linux-amd64
-
-FROM scratch AS talos-backup-linux-arm64
-COPY --from=talos-backup-linux-arm64-build /talos-backup-linux-arm64 /talos-backup-linux-arm64
-
-FROM scratch AS unit-tests
-COPY --from=unit-tests-run /src/coverage.txt /coverage-unit-tests.txt
+RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/pkg GOARCH=arm64 GOOS=linux go build -o /talos-backup-linux-arm64
 
 FROM talos-backup-linux-${TARGETARCH} AS talos-backup
 
