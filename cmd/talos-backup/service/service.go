@@ -12,6 +12,7 @@ import (
 	talosclient "github.com/siderolabs/talos/pkg/machinery/client"
 	talosconfig "github.com/siderolabs/talos/pkg/machinery/client/config"
 
+	"github.com/oscarsiles/talos-backup/pkg/compression"
 	"github.com/siderolabs/talos-backup/pkg/config"
 	"github.com/siderolabs/talos-backup/pkg/encryption"
 	"github.com/siderolabs/talos-backup/pkg/s3"
@@ -33,7 +34,14 @@ func BackupEncryptedSnapshot(ctx context.Context, serviceConfig *config.ServiceC
 
 	defer util.CleanupFile(snapshotPath)
 
-	encryptedFileName, err := encryption.EncryptFile(snapshotPath, serviceConfig.AgeX25519PublicKey)
+	compressedFileName, err := compression.CompressFile(snapshotPath)
+	if err != nil {
+		return fmt.Errorf("failed to compress etcd snapshot: %w", err)
+	}
+
+	defer util.CleanupFile(compressedFileName)
+
+	encryptedFileName, err := encryption.EncryptFile(compressedFileName, serviceConfig.AgeX25519PublicKey)
 	if err != nil {
 		return fmt.Errorf("failed to encrypt etcd snapshot: %w", err)
 	}
