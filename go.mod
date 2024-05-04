@@ -1,4 +1,4 @@
-module github.com/siderolabs/talos-backup
+module github.com/oscarsiles/talos-backup
 
 go 1.21.4
 

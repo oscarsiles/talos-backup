@@ -31,8 +31,8 @@ import (
 	"github.com/stretchr/testify/suite"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	"github.com/siderolabs/talos-backup/cmd/talos-backup/service"
-	pkgconfig "github.com/siderolabs/talos-backup/pkg/config"
+	"github.com/oscarsiles/talos-backup/cmd/talos-backup/service"
+	pkgconfig "github.com/oscarsiles/talos-backup/pkg/config"
 )
 
 type integrationTestSuite struct {

@@ -13,11 +13,11 @@ import (
 	talosconfig "github.com/siderolabs/talos/pkg/machinery/client/config"
 
 	"github.com/oscarsiles/talos-backup/pkg/compression"
-	"github.com/siderolabs/talos-backup/pkg/config"
-	"github.com/siderolabs/talos-backup/pkg/encryption"
-	"github.com/siderolabs/talos-backup/pkg/s3"
-	"github.com/siderolabs/talos-backup/pkg/talos"
-	"github.com/siderolabs/talos-backup/pkg/util"
+	"github.com/oscarsiles/talos-backup/pkg/config"
+	"github.com/oscarsiles/talos-backup/pkg/encryption"
+	"github.com/oscarsiles/talos-backup/pkg/s3"
+	"github.com/oscarsiles/talos-backup/pkg/talos"
+	"github.com/oscarsiles/talos-backup/pkg/util"
 )
 
 // BackupEncryptedSnapshot takes a snapshot of etcd, encrypts it and uploads it to S3.

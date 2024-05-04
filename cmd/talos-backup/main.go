@@ -14,8 +14,8 @@ import (
 	talosclient "github.com/siderolabs/talos/pkg/machinery/client"
 	talosconfig "github.com/siderolabs/talos/pkg/machinery/client/config"
 
-	"github.com/siderolabs/talos-backup/cmd/talos-backup/service"
-	"github.com/siderolabs/talos-backup/pkg/config"
+	"github.com/oscarsiles/talos-backup/cmd/talos-backup/service"
+	"github.com/oscarsiles/talos-backup/pkg/config"
 )
 
 func run() error {

@@ -11,7 +11,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/siderolabs/talos-backup/pkg/util"
+	"github.com/oscarsiles/talos-backup/pkg/util"
 )
 
 // CompressFile compresses a file with gzip.

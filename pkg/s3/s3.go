@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 
-	buconfig "github.com/siderolabs/talos-backup/pkg/config"
+	buconfig "github.com/oscarsiles/talos-backup/pkg/config"
 )
 
 type resolverV2 struct {

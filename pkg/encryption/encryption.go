@@ -12,7 +12,7 @@ import (
 
 	"filippo.io/age"
 
-	"github.com/siderolabs/talos-backup/pkg/util"
+	"github.com/oscarsiles/talos-backup/pkg/util"
 )
 
 // EncryptFile encrypts a file with an age X25519 public key.

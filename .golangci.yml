@@ -36,7 +36,7 @@ linters-settings:
     lines: 60
     statements: 40
   gci:
-    local-prefixes: github.com/siderolabs/talos-backup/
+    local-prefixes: github.com/oscarsiles/talos-backup/
   gocognit:
     min-complexity: 30
   ireturn:
@@ -65,7 +65,7 @@ linters-settings:
   gofmt:
     simplify: true
   goimports:
-    local-prefixes: github.com/siderolabs/talos-backup/
+    local-prefixes: github.com/oscarsiles/talos-backup/
   golint:
     min-confidence: 0.8
   gomnd:
@@ -101,7 +101,7 @@ linters-settings:
   unused:
     check-exported: false
   whitespace:
-    multi-if: false   # Enforces newlines (or comments) after every multi-line if statement
+    multi-if: false # Enforces newlines (or comments) after every multi-line if statement
     multi-func: false # Enforces newlines (or comments) after every multi-line function signature
   wsl:
     strict-append: true
@@ -115,8 +115,8 @@ linters-settings:
   gofumpt:
     extra-rules: false
   cyclop:
-      # the maximal code complexity to report
-      max-complexity: 20
+    # the maximal code complexity to report
+    max-complexity: 20
   #  depguard:
   #    Main:
   #      deny:

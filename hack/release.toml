@@ -1,7 +1,7 @@
 # commit to be tagged for the new release
 commit = "HEAD"
 
-github_repo = "siderolabs/talos-backup"
+github_repo = "oscarsiles/talos-backup"
 match_deps = "^github.com/(siderolabs/[a-zA-Z0-9-]+)$"
 project_name = "talos-backup"
 
