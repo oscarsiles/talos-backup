@@ -101,6 +101,12 @@ COPY --from=generate / /
 WORKDIR /src/cmd/talos-backup
 RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/go/pkg GOARCH=arm64 GOOS=linux go build -o /talos-backup-linux-arm64
 
+FROM scratch AS talos-backup-linux-amd64
+COPY --from=talos-backup-linux-amd64-build /talos-backup-linux-amd64 /talos-backup-linux-amd64
+
+FROM scratch AS talos-backup-linux-arm64
+COPY --from=talos-backup-linux-arm64-build /talos-backup-linux-arm64 /talos-backup-linux-arm64
+
 FROM talos-backup-linux-${TARGETARCH} AS talos-backup
 
 FROM scratch AS talos-backup-all
