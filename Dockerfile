@@ -1,17 +1,11 @@
-# syntax = docker/dockerfile-upstream:1.6.0-labs
-
-# THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
-#
-# Generated on 2023-11-20T06:19:52Z by kres latest.
-
 ARG TOOLCHAIN=docker.io/golang:1.22-alpine
 
 # cleaned up specs and compiled versions
 FROM scratch AS generate
 
-FROM ghcr.io/siderolabs/ca-certificates:v1.6.0-alpha.0-10-gd3d7d29 AS image-ca-certificates
+FROM ghcr.io/siderolabs/ca-certificates:v1.7.0-9-g76bd73c AS image-ca-certificates
 
-FROM ghcr.io/siderolabs/fhs:v1.6.0-alpha.0-10-gd3d7d29 AS image-fhs
+FROM ghcr.io/siderolabs/fhs:v1.7.0-9-g76bd73c AS image-fhs
 
 # runs markdownlint
 FROM docker.io/node:21.1.0-alpine3.18 AS lint-markdown
