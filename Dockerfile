@@ -4,7 +4,7 @@
 #
 # Generated on 2023-11-20T06:19:52Z by kres latest.
 
-ARG TOOLCHAIN
+ARG TOOLCHAIN=docker.io/golang:1.21-alpine
 
 # cleaned up specs and compiled versions
 FROM scratch AS generate
